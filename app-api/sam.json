@@ -1,0 +1,35 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Lambda and API Gateway",
+    "Globals": {
+        "Runtime": "nodejs12.x",
+        "Timeout": 20
+    },
+    "Resources": {
+        "PacmanAPI": {
+            "Type": "AWS::Serverless::Api",
+            "Properties": {
+                "Name": "Pacman bot API",
+                "StageName": "v1"
+            }
+        },
+        "Test": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "CodeUri": "deploy/",
+                "Handler": "index.handle",
+                "Events": {
+                    "HelloWorldApi": {
+                        "Type": "Api",
+                        "Properties": {
+                            "RestApiId": null,
+                            "Path": "/hello",
+                            "Method": "GET"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "Outputs": {}
+}
