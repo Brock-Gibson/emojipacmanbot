@@ -1,1 +1,91 @@
-{}
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Description": "Emoji pacman game bot",
+    "Parameters": {},
+    "Globals": {
+      "Function": {
+        "Runtime": "nodejs12.x",
+        "MemorySize": 128,
+        "Timeout": 10,
+        "Environment": {}
+      }
+    },
+    "Resources": {
+      "EmojiPacmanRunner": {
+        "Type": "AWS::Serverless::Function",
+        "Properties": {
+          "FunctionName": "gameRunner",
+          "CodeUri": "deploy/code",
+          "Handler": "index.handle",
+          "Description": "Handler for all game functions.",
+          "Policies": [
+            { "DynamoDBCrudPolicy": { "TableName": { "Ref": "pacmanBoardTable" } } }
+          ],
+          "Environment": {
+            "Variables": {
+              "tableName": { "Ref": "waitlistEntriesTable" },
+              "awsRegion": { "Fn::Sub": "${AWS::Region}" },
+            }
+          },
+          "Events": {
+            "every20Minutes": {
+              "Type": "Schedule",
+              "Properties": {
+                "Description": "Triggers event once a day at 12 UTC",
+                "Enabled": true,
+                "Name": "GameEveryDayTrigger",
+                "Schedule": "cron(0 12 * * ? *)"
+              }
+            }
+          }
+        }
+      },
+      "gameBackup": {
+        "Type": "AWS::Serverless::Function",
+        "Properties": {
+          "FunctionName": "game-backup",
+          "CodeUri": "deploy/code",
+          "Handler": "backup.handle",
+          "Description": "Handler for backing up the game table",
+          "Policies": [
+            { "DynamoDBBackupFullAccessPolicy": { "TableName": { "Ref": "pacmanBoardTable" } } }
+          ],
+          "Environment": {
+            "Variables": {
+              "tableName": { "Ref": "waitlistEntriesTable" },
+              "awsRegion": { "Fn::Sub": "${AWS::Region}" }
+            }
+          },
+          "Events": {
+            "everyDay": {
+              "Type": "Schedule",
+              "Properties": {
+                "Description": "Triggers event once a day at 12 UTC",
+                "Enabled": true,
+                "Name": "GameEveryDayTrigger",
+                "Schedule": "cron(0 12 * * ? *)"
+              }
+            }
+          }
+        }
+      },
+      "pacmanBoardTable": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "pacmanBoared",
+          "AttributeDefinitions": [
+            { "AttributeName": "email", "AttributeType": "S" },
+            { "AttributeName": "timestamp", "AttributeType": "S" }
+          ],
+          "KeySchema": [
+            { "AttributeName": "email", "KeyType": "HASH" },
+            { "AttributeName": "timestamp", "KeyType": "RANGE" }
+          ],
+          "BillingMode": "PAY_PER_REQUEST",
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      }
+    },
+    "Outputs": {}
+  }

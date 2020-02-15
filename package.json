@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.544.0",
-    "flow-bin": "^0.112.0",
+    "flow-bin": "^0.117.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.0",
     "rollup": "^1.21.2",
