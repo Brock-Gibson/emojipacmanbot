@@ -8,7 +8,7 @@ import flow from 'rollup-plugin-flow'
 // Ignore warnings for node built-in modules that rollup doesn't know.
 const nodeBuiltIns = ['assert', 'https', 'path', 'url', 'crypto']
 
-const awsBuiltins = ['aws-sdk']
+const otherBuiltIns = ['aws-sdk', 'twitter' ]
 
 // Provide name mappings for strangely-formatted CommonJS modules.
 // TODO: Can we remove this?
@@ -25,7 +25,7 @@ export const plugins
 
 // Common external modules
 export const external
-  = nodeBuiltIns.concat(awsBuiltins)
+  = nodeBuiltIns.concat(otherBuiltIns)
 
 // Common output specs
 export const output

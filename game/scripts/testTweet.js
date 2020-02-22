@@ -1,3 +1,4 @@
+
 //@flow
 // Main composition plan for the pacman game service.
 
@@ -9,10 +10,3 @@ const twitterClient = new Twitter({
   access_token_key: '1226612012127358976-u3vEtiqvbQODuX4b8BcQkNMbVPmLTz',
   access_token_secret: 'OEesPNihEgiHovRmxtHMUgZlHXKlENdE2pm7CvsueORvG'
 })
-
-export const handle
-  = event => {
-    console.log('handle', event)
-
-    return Promise.resolve({})
-  }
