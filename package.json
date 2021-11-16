@@ -22,7 +22,7 @@
     "url": "git+https://github.com/Brock-Gibson/emojipacmanbot.git"
   },
   "devDependencies": {
-    "aws-sdk": "^2.619.0",
+    "aws-sdk": "^2.814.0",
     "flow-bin": "^0.117.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.0",
